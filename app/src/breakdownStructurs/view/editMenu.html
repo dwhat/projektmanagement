@@ -1,0 +1,17 @@
+<md-bottom-sheet class="md-list md-has-header">
+
+    <md-subheader>
+        Contact <span class="name">{{ ep.breakdownStructur.name }}</span>:
+    </md-subheader>
+
+    <md-list>
+      <md-item ng-repeat="item in ep.actions">
+        <md-button ng-click="ep.submitContact(item)" id="item_{{$index}}">
+            <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+            {{item.name}}
+        </md-button>
+      </md-item>
+    </md-list>
+
+</md-bottom-sheet>
+

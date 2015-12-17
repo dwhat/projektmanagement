@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Projektmanagement App</title>
+
+		<meta name="description" content="">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+		<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+		<link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+		<link rel="stylesheet" href="assets/app.css"/>
+
+		<style type="text/css">
+			/**
+			* Hide when Angular is not yet loaded and initialized
+			*/
+			[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+				display: none !important;
+			}
+		</style>
+	</head>
+	<body ng-app="bsApp" layout="row" ng-controller="BreakdownStructurController as bs" ng-cloak >
+		<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+		md-component-id="left"
+		md-is-locked-open="$mdMedia('gt-sm')">
+
+		<md-toolbar class="md-whiteframe-z1">
+		<h1>Navigation</h1>
+		</md-toolbar>
+
+		<md-list>
+		<md-list-item ng-repeat="k in bs.breakdownStructurs">
+		<md-button ng-click="bs.selectBreakdownStructur(k)" ng-class="{'selected' : k === bs.selected }">
+		<md-icon icon="list"></md-icon>
+		{{k.name}}
+		</md-button>
+		</md-list-item>
+		</md-list>
+
+		</md-sidenav>
+
+		<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+
+			<md-toolbar layout="row" class="md-whiteframe-z1">
+			<md-button class="menu" hide-gt-sm ng-click="bs.toggleList()" aria-label="Breakdown Structur">
+			<md-icon md-svg-icon="action:chrome_reader_mode" ></md-icon>
+			</md-button>
+			<h1>Projektmanagement</h1>
+			</md-toolbar>
+
+			<md-content flex id="content">
+			<h2>{{bs.selected.name}}</h2>
+			<p>{{bs.selected.description}}</p>
+
+			<script type="text/ng-template"  id="tree_item_renderer.html">
+					<md-subheader class="md-no-sticky">Komponente</md-subheader>
+					<md-list-item class="md-3-line">
+					       <div class="md-list-item-text" layout="column">
+					       	<h3>{{ data.id }}</h3>
+					       	<h4>{{ data.desc }}</h4>
+					       	<p>{{ data.notes }}</p>
+					       </div>
+					 </md-list-item>
+					 <md-list-item class="md-3-line" ng-repeat="data in data.component">
+					       <div class="md-list-item-text" layout="column">
+						<h3>{{id}}.{{ data.id }}</h3>
+					       	<h4>{{ data.desc }}</h4>
+					       	<p>{{ data.notes }}</p>
+						</md-list-item>
+						<md-divider></md-divider>
+			</script>
+			<md-list ng-repeat="data in bs.selected.component" ng-include="'tree_item_renderer.html'"></md-list>
+		<!--	<table>
+				<tr ng-repeat="x in bs.selected.component">
+					<td>{{ x.id }}. </td>
+					<td>{{ x.desc }}</td>
+					<td> <input type="text" ng-model="x.desc" placeholder="{{ x.desc }}"> </td>
+					<td ng-repeat="x in bs.selected.component">
+					</tr>
+				</table> -->
+
+				<md-button class="contact" md-no-ink ng-click="bs.showEditOptions($event)" aria-label="Edit Breakdown structur">
+				<md-tooltip>Edit {{ bs.selected.name }}</md-tooltip>
+				<md-icon md-svg-icon="editor:ic_border_color_24px"></md-icon>
+				</md-button>
+				</md-content> 
+
+			</div>
+
+
+
+			<script src="/bower_components/angular/angular.js"></script>
+			<script src="/bower_components/angular-aria/angular-aria.js"></script>
+			<script src="/bower_components/angular-animate/angular-animate.js"></script>
+			<script src="/bower_components/angular-material/angular-material.js"></script>
+
+
+			<script src="./src/breakdownStructurs/BreakdownStructurs.js"></script>
+			<script src="./src/breakdownStructurs/BreakdownStructurController.js"></script>
+			<script src="./src/breakdownStructurs/BreakdownStructurService.js"></script>
+
+			<script type="text/javascript">
+
+				angular
+				.module('bsApp', ['ngMaterial', 'breakdownStructurs'])
+				.config(function($mdThemingProvider, $mdIconProvider){
+						$mdIconProvider
+						.iconSet('action', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-action.svg', 24)
+						.iconSet('alert', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-alert.svg', 24)
+						.iconSet('av', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-av.svg', 24)
+						.iconSet('communication', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-communication.svg', 24)
+						.iconSet('content', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-content.svg', 24)
+						.iconSet('device', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-device.svg', 24)
+						.iconSet('editor', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-editor.svg', 24)
+						.iconSet('file', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-file.svg', 24)
+						.iconSet('hardware', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-hardware.svg', 24)
+						.iconSet('icons', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-icons.svg', 24)
+						.iconSet('image', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-image.svg', 24)
+						.iconSet('maps', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-maps.svg', 24)
+						.iconSet('navigation', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-navigation.svg', 24)
+						.iconSet('notification', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-notification.svg', 24)
+						.iconSet('social', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-social.svg', 24)
+						.iconSet('toggle', './bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-toggle.svg', 24);
+
+						$mdThemingProvider.theme('default')
+						.primaryPalette('deep-orange')
+						.accentPalette('grey');
+
+				});
+
+</script>
+
+		</body>
+	</html>
